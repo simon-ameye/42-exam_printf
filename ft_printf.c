@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:43 by sameye            #+#    #+#             */
-/*   Updated: 2021/10/05 17:24:13 by sameye           ###   ########.fr       */
+/*   Updated: 2021/10/06 12:20:00 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,22 @@ int ft_putchar(int c)
 	return (1);
 }
 
-int getlen(long j, long base)
+int getlenx(unsigned int j, int base)
+{
+	unsigned int len;
+
+	if (j == 0)
+		return (1);
+	len = 0;
+	while (j > 0)
+	{
+		j = j / base;
+		len++;
+	}
+	return (len);
+}
+
+int getlend(long j, long base)
 {
 	int len;
 
@@ -35,9 +50,9 @@ int getlen(long j, long base)
 	return (len);
 }
 
-long ft_pow(long i, int base)
+long ft_pow(long i, long base)
 {
-	int iter;
+	long iter;
 	long res;
 
 	res = 1;
@@ -53,9 +68,9 @@ long ft_pow(long i, int base)
 int ft_printd(int i)
 {
 	long j;
-	int count;
-	int len;
-	int temp;
+	long count;
+	long len;
+	long temp;
 
 	count = 0;
 	j = i;
@@ -64,7 +79,7 @@ int ft_printd(int i)
 		j = -j;
 		count += ft_putchar('-');
 	}
-	len = getlen(j, 10);
+	len = getlend(j, 10);
 	while (len > 0)
 	{
 		temp = j / ft_pow(len - 1, 10);
@@ -74,14 +89,14 @@ int ft_printd(int i)
 	return (count);
 }
 
-int ft_printx(int j)
+int ft_printx(unsigned int j)
 {
-	int count;
-	int len;
-	int temp;
+	unsigned int count;
+	unsigned int len;
+	unsigned int temp;
 
 	count = 0;
-	len = getlen(j, 16);
+	len = getlenx(j, 16);
 	while (len > 0)
 	{
 		temp = (j / ft_pow(len - 1, 16)) % 16;
@@ -99,6 +114,8 @@ int ft_prints(char *s)
 	int i;
 	int count;
 
+	if (s == NULL)
+		return (ft_prints("(null)"));
 	count = 0;
 	i = 0;
 	while (s[i])
@@ -130,7 +147,7 @@ int ft_printf(const char *fmt, ...)
 			if (fmt[i] == 'd')
 				count += ft_printd(va_arg(ap, int));
 			if (fmt[i] == 'x')
-				count += ft_printx(va_arg(ap, long));
+				count += ft_printx(va_arg(ap, unsigned int));
 		}
 		else
 			count += ft_putchar(fmt[i]);
